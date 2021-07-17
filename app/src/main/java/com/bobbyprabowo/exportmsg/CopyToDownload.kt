@@ -11,6 +11,7 @@ import okio.source
 import java.io.File
 import android.content.ContentValues
 import android.os.Environment.DIRECTORY_DOWNLOADS
+import android.widget.Toast
 
 
 class CopyToDownload(private val context: Context) {
@@ -20,10 +21,10 @@ class CopyToDownload(private val context: Context) {
         when (Build.VERSION.SDK_INT) {
             Build.VERSION_CODES.R, Build.VERSION_CODES.Q -> {
                 val destinationUri = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-
+                val exportDir = "${DIRECTORY_DOWNLOADS}/export-msg"
                 val fileContent = ContentValues()
                 fileContent.put(MediaStore.Downloads.DISPLAY_NAME, file.name)
-                fileContent.put(MediaStore.Downloads.RELATIVE_PATH, "${DIRECTORY_DOWNLOADS}/export-msg")
+                fileContent.put(MediaStore.Downloads.RELATIVE_PATH, exportDir)
                 fileContent.put(MediaStore.Downloads.SIZE, file.length())
                 fileContent.put(MediaStore.Downloads.IS_PENDING, 1)
 
@@ -36,6 +37,7 @@ class CopyToDownload(private val context: Context) {
                     fileContent.put(MediaStore.Downloads.IS_PENDING, 0)
                     context.contentResolver.update(insertedContentUri, fileContent, null, null)
                 }
+                Toast.makeText(context, "Exported at : $exportDir", Toast.LENGTH_LONG).show()
             }
             else -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

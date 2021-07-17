@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -68,8 +69,9 @@ class MainActivity : AppCompatActivity() {
         val exportSms = ExportSms(this)
         lifecycleScope.launchWhenResumed {
             exportSms.execute(file)
-        }
 
+            Toast.makeText(this@MainActivity, "SMS Exported", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun copyToDownload() {
