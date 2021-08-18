@@ -32,19 +32,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.exportSmsToInternalButton.setOnClickListener {
+        binding.exportSmsButton.setOnClickListener {
             if(ContextCompat.checkSelfPermission(baseContext, READ_SMS_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
                 exportSmsToInternal()
+
+                if(ContextCompat.checkSelfPermission(baseContext, WRITE_EXTERNAL_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+                    copyToDownload()
+                } else {
+                    ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_PERMISSION), READ_SMS_REQUEST_CODE)
+                }
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(READ_SMS_PERMISSION), READ_SMS_REQUEST_CODE)
-            }
-        }
-
-        binding.copyExportedSmsToDownloadButton.setOnClickListener {
-            if(ContextCompat.checkSelfPermission(baseContext, WRITE_EXTERNAL_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
-                copyToDownload()
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_PERMISSION), READ_SMS_REQUEST_CODE)
             }
         }
     }
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenResumed {
             exportSms.execute(file)
 
-            Toast.makeText(this@MainActivity, "SMS Exported", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MainActivity, "SMS Exported to Download Folder export-msg", Toast.LENGTH_LONG).show()
         }
     }
 
