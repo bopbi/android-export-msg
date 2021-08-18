@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Export Msg</string>
     <string name="disclaimer">This app did not have any internet permission, the permission is only to export the sms</string>
-    <string name="export_sms_to_download">Export SMS to Download folder</string>
+    <string name="backup_sms_to_download">Backup SMS to Download folder</string>
 </resources>
